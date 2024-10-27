@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+      #container {
+        width: 500px;
+        height: 500px;
+        position: relative;
+        background-image: url('med/1729736855363.png');
+      }
+
+      #animate {
+        width: 34px;
+        height: 34px;
+        position: absolute;
+        top: 0px; /* Starting position */
+        left: 20px; /* Starting position */
+        background-image: url('med/1724228650491.gif');
+        background-size: cover;
+      }
+
+      #animate1 {
+        width: 34px;
+        height: 34px;
+        position: absolute;
+        top: 170px; /* Different starting position */
+        left: 200px; /* Different starting position */
+        background-image: url('med/1724228615897.gif');
+        background-size: cover;
+      }
+
+      .button {
+        border: none;
+        color: white;
+        padding: 10px 32px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 4px 6px;
+        cursor: pointer;
+        background-color: #04AA6D; 
+        transition: background-color 0.3s, transform 0.2s; 
+      }
+
+      .button:hover {
+        background-color: #3e8e41; 
+        transform: scale(1.05); 
+      }
+
+      .button:active {
+        background-color: #3e8e41; 
+        transform: scale(0.95);
+      }
+	  
+    </style>
+  <body>
+    <p>
+      <button class="button" onclick="move('up', 'animate')">Up</button>
+      <button class="button" onclick="move('down', 'animate')">Down</button>
+      <button class="button" onclick="move('left', 'animate')">Left</button>
+      <button class="button" onclick="move('right', 'animate')">Right</button>
+      <br>
+      <button class="button" onclick="move('up', 'animate1')">Up 1</button>
+      <button class="button" onclick="move('down', 'animate1')">Down 1</button>
+      <button class="button" onclick="move('left', 'animate1')">Left 1</button>
+      <button class="button" onclick="move('right', 'animate1')">Right 1</button>
+    </p>
+
+    <div id="container">
+      <div id="animate"></div>
+      <div id="animate1"></div>
+    </div>
+
+    <script>
+      function move(direction, elementId) {
+        const elem = document.getElementById(elementId);
+        const otherElem = elementId === 'animate' ? document.getElementById('animate1') : document.getElementById('animate');
+        let top = parseInt(window.getComputedStyle(elem).top) || 0;
+        let left = parseInt(window.getComputedStyle(elem).left) || 0;
+
+        // Container boundaries
+        const container = document.getElementById('container');
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+        const elemWidth = elem.clientWidth;
+        const elemHeight = elem.clientHeight;
+
+        // Calculate the new position
+        let newTop = top;
+        let newLeft = left;
+
+        switch (direction) {
+          case 'up':
+            if (top > 0) {
+              newTop = top - 30;
+            }
+            break;
+          case 'down':
+            if (top + elemHeight < containerHeight) {
+              newTop = top + 30;
+            }
+            break;
+          case 'left':
+            if (left > 0) {
+              newLeft = left - 30;
+            }
+            break;
+          case 'right':
+            if (left + elemWidth < containerWidth) {
+              newLeft = left + 30;
+            }
+            break;
+        }
+
+        // Check if the new position would cause overlap with the other element
+        const otherTop = parseInt(window.getComputedStyle(otherElem).top) || 0;
+        const otherLeft = parseInt(window.getComputedStyle(otherElem).left) || 0;
+
+        if (
+          !(
+            newLeft + elemWidth <= otherLeft || // Check if `elem` is left of `otherElem`
+            newLeft >= otherLeft + otherElem.clientWidth || // Check if `elem` is right of `otherElem`
+            newTop + elemHeight <= otherTop || // Check if `elem` is above `otherElem`
+            newTop >= otherTop + otherElem.clientHeight // Check if `elem` is below `otherElem`
+          )
+        ) {
+          // If overlap would occur, show an alert
+          alert("U GAY");
+          return;
+        }
+
+        // Update the position if no overlap
+        elem.style.top = newTop + "px";
+        elem.style.left = newLeft + "px";
+      }
+    </script>
+
+
+    </div>
+  </div>
+</div>
+</head>
+</body>
+</html>
